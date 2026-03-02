@@ -20,20 +20,69 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string filename, vector<string> &names,vector<int> &scores, vector<char> &grades){
+    ifstream fin(filename);
+    string Name;
+    int s1, s2, s3; 
+    while(getline(fin, Name, ':')){
+        if(fin >> s1 >> s2 >> s3 ){
+            names.push_back(Name);
+            scores.push_back(s1+s2+s3);
+            grades.push_back(score2grade(s1+s2+s3));
+            fin.ignore(100,'\n');
+            }
+        }
 }
 
-void getCommand(){
-
+void getCommand(string &command, string &key){
+    string line;
+    cout << "Please input your command:\n";
+    getline(cin >> ws, line);
+    size_t pos = line.find(' ');
+    
+    if(pos != string::npos){
+        command = line.substr(0, pos);
+        key = line.substr(pos +1);
+    }else{
+        command = line;
+        key = "";
+    }
+    
 }
 
-void searchName(){
-
+void searchName(vector<string> &names, vector<int> &scores, vector<char> &grades, string key){
+    bool found = false;
+    cout << "---------------------------------\n";
+    for(unsigned int i=0; i < names.size(); i++){
+        if(toUpperStr(names[i]) == key){
+            cout << names[i] << "'s score = " << scores[i] << endl;
+            cout << names[i] << "'s grade = " << grades[i] << endl;
+            found = true;
+            break;
+        }
+    }
+    if(!found){
+        cout << "Cannot found."<< endl;
+    }
+    
+    cout << "---------------------------------\n";
 }
 
-void searchGrade(){
-
+void searchGrade(vector<string> &names, vector<int> &scores, vector<char> &grades, string key){
+    bool found = false;
+    char key2char = key[0]; 
+    cout << "---------------------------------\n";
+    for(unsigned int i=0; i < names.size(); i++){
+        if(key2char == grades[i]){
+            cout << names[i] << " ("<< scores[i] << ")" << endl;
+            found = true;
+        }
+    }
+    if(!found){
+        cout << "Cannot found."<< endl;
+    }
+    
+    cout << "---------------------------------\n";
 }
 
 
